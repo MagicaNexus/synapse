@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.0
+
+### Minor Changes
+
+- 2caec25: Adding Page Centre and set the map
+
 ## 1.0.0
 
 ### Major Changes
