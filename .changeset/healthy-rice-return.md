@@ -1,0 +1,5 @@
+---
+'@eigo/synapse': patch
+---
+
+Patch

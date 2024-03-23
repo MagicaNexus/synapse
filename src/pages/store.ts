@@ -82,8 +82,6 @@ export const getStore = () => {
   }
 };
 
-customizeAutocompleteDropdown();
-
 /*checkBusinessStatus(placeId, map as google.maps.Map<Element>)
       .then((status) => {
         if (status === 'Open') {
@@ -95,31 +93,3 @@ customizeAutocompleteDropdown();
         }
       })
       .catch((error) => console.error(error));*/
-
-function customizeAutocompleteDropdown() {
-  // Create a style element
-  const style = document.createElement('style');
-
-  // Set the CSS rules to customize the autocomplete dropdown
-  const css = `
-    .pac-container {
-      background-color: #white !important;
-      border-radius: 0.5rem;
-      padding: 0.5rem 1rem;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.20);
-    }
-    .pac-item {
-      color: black;
-    }
-
-    .pac-item-query {
-      color: black;
-    }
-  `;
-
-  // Set the CSS rules as the text content of the style element
-  style.textContent = css;
-
-  // Append the style element to the document's head
-  document.head.appendChild(style);
-}
