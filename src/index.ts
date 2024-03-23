@@ -1,3 +1,4 @@
+import { getCentre } from '$pages/centre';
 import { getStore } from '$pages/store';
 
 // Disable pressing enter to send a form
@@ -9,14 +10,15 @@ document.addEventListener('keypress', (e) => {
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  console.log('Webflow loaded');
-  console.log('Path:', window.location.pathname);
-  switch (window.location.pathname) {
-    case '/':
-      console.log('Home page');
+  const page = document.body.getAttribute('data-script');
+  switch (page) {
+    case 'home':
       break;
-    case '/nos-centres':
+    case 'nos-centres':
       getStore();
+      break;
+    case 'centre':
+      getCentre();
       break;
   }
 });

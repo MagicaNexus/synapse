@@ -2,6 +2,7 @@ import { defaultIcon, geolocationIcon, placeIcon } from '$assets/mapIcons';
 import { getUserLocation } from '$utils/geolocation';
 import {
   addClickEventListener,
+  createAutocomplete,
   createInfoWindowContent,
   createMarker,
   initMap,
@@ -11,24 +12,14 @@ import {
   zoomToLocation,
 } from '$utils/googlemaps';
 
-import gmapStyle from '../styles/googlemaps.json';
-
-const mapOptions: google.maps.MapOptions = {
-  zoomControl: false,
-  streetViewControl: false,
-  mapTypeControl: false,
-  fullscreenControl: false,
-  styles: gmapStyle as google.maps.MapTypeStyle[],
-};
-
 export const getStore = () => {
   const mapElement = document.getElementById('store-locator-map');
   const inputElement = document.getElementById('input') as HTMLInputElement;
   if (!mapElement || !inputElement) return;
-  const map = initMap(mapElement, mapOptions);
+  const map = initMap(mapElement);
   const geolocationButton = document.getElementById('geolocation');
   const bounds = new google.maps.LatLngBounds();
-  const autocomplete = new google.maps.places.Autocomplete(inputElement);
+  const autocomplete = createAutocomplete(inputElement);
   const places = document.querySelectorAll<HTMLElement>('[sy-element="store-locator-item"]');
   const infoWindows: google.maps.InfoWindow[] = [];
   let marker: google.maps.Marker;

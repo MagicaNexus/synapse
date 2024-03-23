@@ -1,13 +1,31 @@
 import { geolocationIcon } from '$assets/mapIcons';
 import type { ShopWithDistance } from '$interfaces/ShopWithDistance';
 
+import gmapStyle from '../styles/googlemaps.json';
 import { getUserLocation } from './geolocation';
 
-export function initMap(element: HTMLElement, options: google.maps.MapOptions) {
-  return new google.maps.Map(element, options) as google.maps.Map<HTMLElement>;
+type Map = google.maps.Map;
+type LatLng = google.maps.LatLng;
+type Marker = google.maps.Marker;
+type InfoWindow = google.maps.InfoWindow;
+
+export function initMap(element: HTMLElement) {
+  return new google.maps.Map(element, {
+    zoomControl: false,
+    streetViewControl: false,
+    mapTypeControl: false,
+    fullscreenControl: false,
+    styles: gmapStyle as google.maps.MapTypeStyle[],
+  });
 }
 
-export async function updateUserLocation(map: google.maps.Map, places: NodeListOf<HTMLElement>) {
+export function createAutocomplete(input: HTMLInputElement) {
+  return new google.maps.places.Autocomplete(input, {
+    componentRestrictions: { country: 'fr' },
+  });
+}
+
+export async function updateUserLocation(map: Map, places: NodeListOf<HTMLElement>) {
   try {
     const userLocation = await getUserLocation();
     createMarker(map, userLocation, geolocationIcon);
@@ -17,7 +35,10 @@ export async function updateUserLocation(map: google.maps.Map, places: NodeListO
   }
 }
 
-export function createMarker(map: google.maps.Map, location: google.maps.LatLng, icon: unknown) {
+// Définir un type d'union pour l'icône
+type MarkerIcon = string | google.maps.Icon | google.maps.Symbol | null | undefined;
+
+export function createMarker(map: Map, location: LatLng, icon: MarkerIcon) {
   const markerOptions: google.maps.MarkerOptions = {
     position: location,
     map: map,
@@ -26,7 +47,7 @@ export function createMarker(map: google.maps.Map, location: google.maps.LatLng,
   return new google.maps.Marker(markerOptions);
 }
 
-export function zoomToLocation(map: google.maps.Map, location: google.maps.LatLng, zoom = 12) {
+export function zoomToLocation(map: Map, location: LatLng, zoom = 12) {
   map.setZoom(zoom);
   map.panTo(location);
 }
@@ -55,12 +76,7 @@ export function checkBusinessStatus(placeId: string, map: google.maps.Map) {
   });
 }
 
-export async function updateMap(
-  map: google.maps.Map,
-  marker: google.maps.Marker,
-  location: google.maps.LatLng,
-  icon: unknown
-) {
+export async function updateMap(map: Map, marker: Marker, location: LatLng, icon: MarkerIcon) {
   if (marker) marker.setMap(null);
   marker = createMarker(map, location, icon);
   zoomToLocation(map, location);
@@ -100,7 +116,7 @@ export function createInfoWindowContent(
         </div>`;
 }
 
-export function updatePlaces(userLocation: google.maps.LatLng, places: NodeListOf<HTMLElement>) {
+export function updatePlaces(userLocation: LatLng, places: NodeListOf<HTMLElement>) {
   const shopsWithDistance: ShopWithDistance[] = [];
   for (const place of places) {
     const lat = parseFloat(place.querySelector('[sy-element="latitude"]')?.innerHTML || '0');
@@ -153,10 +169,10 @@ export function updatePlaces(userLocation: google.maps.LatLng, places: NodeListO
 }
 
 export function addClickEventListener(
-  marker: google.maps.Marker,
-  map: google.maps.Map<HTMLElement>,
-  position: google.maps.LatLng,
-  infoWindows: google.maps.InfoWindow[],
+  marker: Marker,
+  map: Map,
+  position: LatLng,
+  infoWindows: InfoWindow[],
   infoWindowContent: string
 ) {
   const infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
