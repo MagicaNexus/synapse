@@ -4,8 +4,11 @@
     "rootDir": ".",
     "baseUrl": "./",
     "paths": {
-      "$utils/*": ["src/utils/*"]
+      "$utils/*": ["src/utils/*"],
+      "$pages/*": ["src/pages/*"],
+      "$assets/*": ["src/assets/*"],
+      "$interfaces/*": ["src/interfaces/*"],
     },
-    "types": ["@finsweet/ts-utils"]
+    "types": ["@finsweet/ts-utils", "googlemaps"]
   }
 }

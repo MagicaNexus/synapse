@@ -1,6 +1,17 @@
 {
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
-  }
+    "source.fixAll.eslint": "explicit"
+  },
+  "cSpell.words": [
+    "autosecurite",
+    "autosur",
+    "dekra",
+    "enseigne",
+    "gmap",
+    "gmaps",
+    "norisko",
+    "securitest",
+    "Webflow"
+  ]
 }
