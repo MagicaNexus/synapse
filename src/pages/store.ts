@@ -32,7 +32,7 @@ export const getStore = () => {
 
   autocomplete.addListener('place_changed', () => {
     const { location } = autocomplete.getPlace().geometry!;
-    updateMap(map, marker, location, defaultIcon);
+    updateMap(map, marker, location, defaultIcon as google.maps.Icon);
     updatePlaces(location, places);
   });
 
@@ -61,9 +61,12 @@ export const getStore = () => {
     bounds.extend(position);
     map.fitBounds(bounds);
 
+    //get children of the place element
+    const children = place.children[0];
+
     addClickEventListener(marker, map, position, infoWindows, infoWindowContent);
 
-    place.addEventListener('click', () => {
+    children.addEventListener('click', () => {
       infoWindows.forEach((infoWindow) => infoWindow.close());
       const infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
       infoWindow.open(map, marker);
