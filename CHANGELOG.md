@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.1
+
+### Patch Changes
+
+- af2ac58: Patching a bug on the center page - button
+
 ## 1.1.0
 
 ### Minor Changes
