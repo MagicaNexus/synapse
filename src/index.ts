@@ -8,17 +8,14 @@ document.addEventListener('keypress', (e) => {
   }
 });
 
-window.Webflow ||= [];
-window.Webflow.push(() => {
-  const page = document.body.getAttribute('data-script');
-  switch (page) {
-    case 'home':
-      break;
-    case 'nos-centres':
-      getStore();
-      break;
-    case 'centre':
-      getCentre();
-      break;
-  }
-});
+const page = document.body.getAttribute('data-script');
+switch (page) {
+  case 'home':
+    break;
+  case 'nos-centres':
+    getStore(); // Call getStore function here
+    break;
+  case 'centre':
+    getCentre();
+    break;
+}

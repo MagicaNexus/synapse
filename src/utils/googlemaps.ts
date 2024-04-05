@@ -2,7 +2,6 @@ import { geolocationIcon } from '$assets/mapIcons';
 import type { ShopWithDistance } from '$interfaces/ShopWithDistance';
 
 import gmapStyle from '../styles/googlemaps.json';
-import { getUserLocation } from './geolocation';
 
 type Map = google.maps.Map;
 type LatLng = google.maps.LatLng;
@@ -25,11 +24,23 @@ export function createAutocomplete(input: HTMLInputElement) {
   });
 }
 
-export async function updateUserLocation(map: Map, places: NodeListOf<HTMLElement>) {
+export function updateUserLocation(map: Map, places: NodeListOf<HTMLElement>) {
   try {
-    const userLocation = await getUserLocation();
-    createMarker(map, userLocation, geolocationIcon);
-    updatePlaces(userLocation, places);
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const userLocation = new google.maps.LatLng(latitude, longitude); // Convert to LatLng object
+          createMarker(map, userLocation, geolocationIcon);
+          updatePlaces(userLocation, places);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser');
+    }
   } catch (error) {
     console.error(error);
   }
@@ -118,6 +129,7 @@ export function createInfoWindowContent(
 
 export function updatePlaces(userLocation: LatLng, places: NodeListOf<HTMLElement>) {
   const shopsWithDistance: ShopWithDistance[] = [];
+
   for (const place of places) {
     const lat = parseFloat(place.querySelector('[sy-element="latitude"]')?.innerHTML || '0');
     const lon = parseFloat(place.querySelector('[sy-element="longitude"]')?.innerHTML || '0');
@@ -168,7 +180,7 @@ export function updatePlaces(userLocation: LatLng, places: NodeListOf<HTMLElemen
   });
 }
 
-export function addClickEventListener(
+export function addMarkerClickEventListener(
   marker: Marker,
   map: Map,
   position: LatLng,

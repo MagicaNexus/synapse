@@ -1,7 +1,6 @@
 import { defaultIcon, geolocationIcon, placeIcon } from '$assets/mapIcons';
-import { getUserLocation } from '$utils/geolocation';
 import {
-  addClickEventListener,
+  addMarkerClickEventListener,
   createAutocomplete,
   createInfoWindowContent,
   createMarker,
@@ -20,15 +19,9 @@ export const getStore = () => {
   const geolocationButton = document.getElementById('geolocation');
   const bounds = new google.maps.LatLngBounds();
   const autocomplete = createAutocomplete(inputElement);
-  const places = document.querySelectorAll<HTMLElement>('[sy-element="store-locator-item"]');
+  const places = document.querySelectorAll<HTMLElement>('[sy-element="item"]');
   const infoWindows: google.maps.InfoWindow[] = [];
   let marker: google.maps.Marker;
-
-  geolocationButton?.addEventListener('click', async () => {
-    const location = await getUserLocation();
-    updateMap(map, marker, location, geolocationIcon);
-    updatePlaces(location, places);
-  });
 
   autocomplete.addListener('place_changed', () => {
     const { location } = autocomplete.getPlace().geometry!;
@@ -37,7 +30,6 @@ export const getStore = () => {
   });
 
   updateUserLocation(map, places);
-
   places.forEach((place) => setPlace(place, map));
 
   function setPlace(place: HTMLElement, map: google.maps.Map<HTMLElement>) {
@@ -58,22 +50,54 @@ export const getStore = () => {
     const position = new google.maps.LatLng(parseFloat(latitude), parseFloat(longitude));
     const marker = createMarker(map, position, placeIcon);
     const infoWindowContent = createInfoWindowContent(city, enseigne, imageUrl, direction, url);
+    const itemClickMap = place.querySelector('[sy-element="item-click-map"]') as HTMLElement;
     bounds.extend(position);
     map.fitBounds(bounds);
 
-    //get children of the place element
-    const children = place.children[0];
+    addMarkerClickEventListener(marker, map, position, infoWindows, infoWindowContent);
 
-    addClickEventListener(marker, map, position, infoWindows, infoWindowContent);
+    let hoverTimer: number;
 
-    children.addEventListener('click', () => {
+    itemClickMap.addEventListener('mouseenter', () => {
+      hoverTimer = setTimeout(() => {
+        openInfoWindow();
+      }, 1000);
+    });
+
+    itemClickMap.addEventListener('click', () => {
+      openInfoWindow();
+    });
+
+    function openInfoWindow() {
       infoWindows.forEach((infoWindow) => infoWindow.close());
       const infoWindow = new google.maps.InfoWindow({ content: infoWindowContent });
       infoWindow.open(map, marker);
       infoWindows.push(infoWindow);
       zoomToLocation(map as google.maps.Map<Element>, position);
+    }
+
+    itemClickMap.addEventListener('mouseleave', () => {
+      clearTimeout(hoverTimer);
     });
   }
+
+  geolocationButton?.addEventListener('click', async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const userLocation = new google.maps.LatLng(latitude, longitude); // Convert to LatLng object
+          updateMap(map, marker, userLocation, geolocationIcon);
+          updatePlaces(userLocation, places);
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser');
+    }
+  });
 };
 
 /*checkBusinessStatus(placeId, map as google.maps.Map<Element>)
