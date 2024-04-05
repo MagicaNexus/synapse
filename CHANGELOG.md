@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.2
+
+### Patch Changes
+
+- 391d6e8: Make the map work again
+
 ## 1.1.1
 
 ### Patch Changes
