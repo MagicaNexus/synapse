@@ -13,9 +13,12 @@ switch (page) {
   case 'home':
     break;
   case 'nos-centres':
+    //wait for the page to load
+    window.addEventListener('load', getStore);
+    break;
     getStore(); // Call getStore function here
     break;
   case 'centre':
-    getCentre();
+    window.addEventListener('load', getCentre);
     break;
 }
