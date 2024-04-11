@@ -1,5 +1,0 @@
----
-'@eigo/synapse': patch
----
-
-Test

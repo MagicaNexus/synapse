@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.4
+
+### Patch Changes
+
+- 98be807: Test
+
 ## 1.1.3
 
 ### Patch Changes
