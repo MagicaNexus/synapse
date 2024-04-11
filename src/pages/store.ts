@@ -51,11 +51,6 @@ export const getStore = () => {
     const marker = createMarker(map, position, placeIcon);
     const infoWindowContent = createInfoWindowContent(city, enseigne, imageUrl, direction, url);
     const itemClickMap = place.querySelector('[sy-element="item-click-map"]') as HTMLElement;
-    const distanceElement = place.querySelector('[sy-element="distance"]') as HTMLElement;
-    if (distanceElement) {
-      //set element to display none
-      distanceElement.style.display = 'none';
-    }
 
     bounds.extend(position);
     map.fitBounds(bounds);

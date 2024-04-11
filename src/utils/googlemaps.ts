@@ -204,7 +204,6 @@ export function updatePlaces(userLocation: LatLng, places: NodeListOf<HTMLElemen
   shopsWithDistance.forEach((shop, index) => {
     const distanceElement = shop.element.querySelector('[sy-element="distance"]') as HTMLElement;
     if (distanceElement) {
-      distanceElement.style.display = 'block';
       distanceElement.innerHTML = shop.distance + ' km';
     } else {
       console.error('Distance element not found for a shop:', shop.element);
