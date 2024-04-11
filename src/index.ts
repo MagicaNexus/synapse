@@ -17,6 +17,6 @@ switch (page) {
     window.addEventListener('load', getStore);
     break; // Call getStore function here
   case 'centre':
-    window.addEventListener('DOMContentLoaded', getCentre);
+    window.addEventListener('load', getCentre);
     break;
 }
