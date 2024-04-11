@@ -1,5 +1,12 @@
 # @eigo/synapse
 
+## 1.1.7
+
+### Patch Changes
+
+- 38751bb: Change assets and infowindow
+- e9d38e2: Test
+
 ## 1.1.6
 
 ### Patch Changes
