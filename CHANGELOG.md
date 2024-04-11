@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.3
+
+### Patch Changes
+
+- decd269: Adding location timeout and some error messages
+
 ## 1.1.2
 
 ### Patch Changes
