@@ -51,6 +51,12 @@ export const getStore = () => {
     const marker = createMarker(map, position, placeIcon);
     const infoWindowContent = createInfoWindowContent(city, enseigne, imageUrl, direction, url);
     const itemClickMap = place.querySelector('[sy-element="item-click-map"]') as HTMLElement;
+    const distanceElement = place.querySelector('[sy-element="distance"]') as HTMLElement;
+    if (distanceElement) {
+      //set element to display none
+      distanceElement.style.display = 'none';
+    }
+
     bounds.extend(position);
     map.fitBounds(bounds);
 
@@ -82,21 +88,14 @@ export const getStore = () => {
   }
 
   geolocationButton?.addEventListener('click', async () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          const userLocation = new google.maps.LatLng(latitude, longitude); // Convert to LatLng object
-          updateMap(map, marker, userLocation, geolocationIcon);
-          updatePlaces(userLocation, places);
-        },
-        (error) => {
-          console.error(error);
-        }
-      );
-    } else {
-      console.error('Geolocation is not supported by this browser');
-    }
+    //get position from the local storage
+    const userLocation = JSON.parse(localStorage.getItem('userLocation')!);
+    if (!userLocation) return;
+    if (!userLocation.latitude || !userLocation.longitude) return;
+    const { latitude, longitude } = userLocation;
+    const position = new google.maps.LatLng(latitude, longitude);
+    updateMap(map, marker, position, geolocationIcon);
+    updatePlaces(position, places);
   });
 };
 

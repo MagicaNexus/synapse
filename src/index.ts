@@ -15,10 +15,8 @@ switch (page) {
   case 'nos-centres':
     //wait for the page to load
     window.addEventListener('load', getStore);
-    break;
-    getStore(); // Call getStore function here
-    break;
+    break; // Call getStore function here
   case 'centre':
-    window.addEventListener('load', getCentre);
+    window.addEventListener('DOMContentLoaded', getCentre);
     break;
 }

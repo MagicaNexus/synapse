@@ -26,24 +26,82 @@ export function createAutocomplete(input: HTMLInputElement) {
 
 export function updateUserLocation(map: Map, places: NodeListOf<HTMLElement>) {
   try {
+    // Créer un élément de chargement
+    const loader = document.querySelector('.loader') as HTMLElement;
     if (navigator.geolocation) {
+      // Définir le délai maximum d'attente en millisecondes (par exemple, 10000 pour 10 secondes)
+      const timeoutMilliseconds = 10000;
+
+      if (localStorage.getItem('userLocation')) {
+        const { latitude, longitude } = JSON.parse(localStorage.getItem('userLocation')!);
+        const userLocation = new google.maps.LatLng(latitude, longitude); // Convertir en objet LatLng
+        createMarker(map, userLocation, geolocationIcon);
+        updatePlaces(userLocation, places);
+        loader.style.display = 'none'; // Masquer le loader une fois que la localisation est récupérée depuis le stockage local
+      }
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          const userLocation = new google.maps.LatLng(latitude, longitude); // Convert to LatLng object
+          const userLocation = new google.maps.LatLng(latitude, longitude); // Convertir en objet LatLng
+          localStorage.setItem(
+            'userLocation',
+            JSON.stringify({ latitude: latitude, longitude: longitude })
+          );
           createMarker(map, userLocation, geolocationIcon);
           updatePlaces(userLocation, places);
+          loader.style.display = 'none'; // Masquer le loader une fois que la localisation est récupérée
         },
         (error) => {
           console.error(error);
+          if (error.code === error.TIMEOUT) {
+            // Afficher une bannière ou une fenêtre contextuelle en cas de dépassement du délai
+            if (!localStorage.getItem('userLocation')) {
+              displayTimeoutBanner();
+              loader.style.display = 'none'; // Masquer le loader en cas de dépassement du délai
+            }
+          }
+        },
+        {
+          timeout: timeoutMilliseconds, // Spécifier le délai maximum d'attente
         }
       );
     } else {
-      console.error('Geolocation is not supported by this browser');
+      console.error("La géolocalisation n'est pas prise en charge par ce navigateur");
     }
   } catch (error) {
     console.error(error);
   }
+}
+
+function displayTimeoutBanner() {
+  // Créer une bannière indiquant que la géolocalisation a pris trop de temps
+  const banner = document.createElement('div');
+  banner.textContent =
+    'Un problème de géolocalisation est survenu avec votre navigateur. Veuillez recharger la page. ';
+  banner.style.position = 'fixed';
+  banner.style.bottom = '0';
+  banner.style.left = '0';
+  banner.style.width = '100%';
+  banner.style.backgroundColor = 'red';
+  banner.style.color = 'white';
+  banner.style.padding = '10px';
+  banner.style.textAlign = 'center';
+
+  // Créer un bouton de rechargement de la page
+  const reloadButton = document.createElement('button');
+  //add "is-secondary" class to the button
+  reloadButton.classList.add('button', 'is-secondary', 'is-small');
+  reloadButton.textContent = 'Recharger';
+  reloadButton.addEventListener('click', () => {
+    window.location.reload();
+  });
+
+  // Ajouter le bouton à la bannière
+  banner.appendChild(reloadButton);
+
+  // Ajouter la bannière au corps du document
+  document.body.appendChild(banner);
 }
 
 // Définir un type d'union pour l'icône
@@ -144,9 +202,10 @@ export function updatePlaces(userLocation: LatLng, places: NodeListOf<HTMLElemen
   shopsWithDistance.sort((a, b) => parseFloat(a.distance) - parseFloat(b.distance));
 
   shopsWithDistance.forEach((shop, index) => {
-    const distanceElement = shop.element.querySelector('[sy-element="distance"]');
+    const distanceElement = shop.element.querySelector('[sy-element="distance"]') as HTMLElement;
     if (distanceElement) {
-      distanceElement.innerHTML = shop.distance;
+      distanceElement.style.display = 'block';
+      distanceElement.innerHTML = shop.distance + ' km';
     } else {
       console.error('Distance element not found for a shop:', shop.element);
     }
