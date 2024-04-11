@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.5
+
+### Patch Changes
+
+- 13b9e22: Remove the distance item element
+
 ## 1.1.4
 
 ### Patch Changes
