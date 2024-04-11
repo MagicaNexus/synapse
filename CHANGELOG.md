@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.6
+
+### Patch Changes
+
+- 65d85d0: Change place icon
+
 ## 1.1.5
 
 ### Patch Changes
