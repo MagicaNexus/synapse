@@ -167,14 +167,7 @@ export function createInfoWindowContent(
             <img class="infowindow-image-wrapper" src="${imageUrl}">
         </div>
         <div class="button-group is-right infowindow">
-            <a href="${direction}" class="button is-secondary is-small is-icon is-info-window icon-only w-inline-block">
-                <div class="icon-embed-xsmall w-embed">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                        <path fill="currentColor" d="m21.41 10.59l-7.99-8c-.78-.78-2.05-.78-2.83 0l-8.01 8c-.78.78-.78 2.05 0 2.83l8.01 8c.78.78 2.05.78 2.83 0l7.99-8c.79-.79.79-2.05 0-2.83M13.5 14.5V12H10v3H8v-4c0-.55.45-1 1-1h4.5V7.5L17 11z"></path>
-                    </svg>
-                </div>
-            </a>
-            <a href="${url}" class="button is-secondary is-small is-icon is-info-window w-inline-block">
+            <a href="${url}" class="button is-small is-icon is-info-window w-inline-block">
                 <div class="text-block-2">Voir le centre</div>
                 <div class="icon-embed-xxsmall w-embed">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--ic" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
