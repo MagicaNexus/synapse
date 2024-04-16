@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.9
+
+### Patch Changes
+
+- 760b303: Adding a smooth scroll on autocomplete
+
 ## 1.1.8
 
 ### Patch Changes
