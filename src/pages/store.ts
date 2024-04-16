@@ -57,14 +57,6 @@ export const getStore = () => {
 
     addMarkerClickEventListener(marker, map, position, infoWindows, infoWindowContent);
 
-    let hoverTimer: number;
-
-    itemClickMap.addEventListener('mouseenter', () => {
-      hoverTimer = setTimeout(() => {
-        openInfoWindow();
-      }, 1000);
-    });
-
     itemClickMap.addEventListener('click', () => {
       openInfoWindow();
     });
@@ -76,10 +68,6 @@ export const getStore = () => {
       infoWindows.push(infoWindow);
       zoomToLocation(map as google.maps.Map<Element>, position);
     }
-
-    itemClickMap.addEventListener('mouseleave', () => {
-      clearTimeout(hoverTimer);
-    });
   }
 
   geolocationButton?.addEventListener('click', async () => {
