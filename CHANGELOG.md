@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.8
+
+### Patch Changes
+
+- 19e7e3d: Remove the hover state
+
 ## 1.1.7
 
 ### Patch Changes
