@@ -27,6 +27,7 @@ export const getStore = () => {
     const { location } = autocomplete.getPlace().geometry!;
     updateMap(map, marker, location, defaultIcon as google.maps.Icon);
     updatePlaces(location, places);
+    document.getElementById('map_wrapper')?.scrollIntoView({ behavior: 'smooth' });
   });
 
   updateUserLocation(map, places);
