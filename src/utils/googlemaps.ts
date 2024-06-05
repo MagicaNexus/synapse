@@ -8,7 +8,11 @@ type LatLng = google.maps.LatLng;
 type Marker = google.maps.Marker;
 type InfoWindow = google.maps.InfoWindow;
 
-export function initMap(element: HTMLElement) {
+export function initializeMap(element: HTMLElement) {
+  if (!element) {
+    console.error('Map element not found');
+    return null;
+  }
   return new google.maps.Map(element, {
     zoomControl: false,
     streetViewControl: false,

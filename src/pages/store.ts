@@ -4,18 +4,29 @@ import {
   createAutocomplete,
   createInfoWindowContent,
   createMarker,
-  initMap,
+  initializeMap,
   updateMap,
   updatePlaces,
   updateUserLocation,
   zoomToLocation,
 } from '$utils/googlemaps';
 
-export const getStore = () => {
+checkGoogle();
+
+function checkGoogle() {
+  if (typeof google === 'undefined') {
+    setTimeout(checkGoogle, 100);
+    return;
+  }
+  getStore();
+}
+
+function getStore() {
   const mapElement = document.getElementById('store-locator-map');
   const inputElement = document.getElementById('input') as HTMLInputElement;
   if (!mapElement || !inputElement) return;
-  const map = initMap(mapElement);
+  const map = initializeMap(mapElement);
+  if (!map) return;
   const geolocationButton = document.getElementById('geolocation');
   const bounds = new google.maps.LatLngBounds();
   const autocomplete = createAutocomplete(inputElement);
@@ -81,7 +92,7 @@ export const getStore = () => {
     updateMap(map, marker, position, geolocationIcon);
     updatePlaces(position, places);
   });
-};
+}
 
 /*checkBusinessStatus(placeId, map as google.maps.Map<Element>)
       .then((status) => {
