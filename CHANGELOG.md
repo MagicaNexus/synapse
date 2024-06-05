@@ -1,5 +1,11 @@
 # @eigo/synapse
 
+## 1.1.10
+
+### Patch Changes
+
+- 5cad650: Maps
+
 ## 1.1.9
 
 ### Patch Changes
